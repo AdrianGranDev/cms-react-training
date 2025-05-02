@@ -14,37 +14,88 @@ export default async function page({params: {pokemonId},}:{
 }) {
 
   const pokeData = await getPokemonData(pokemonId);
+  console.log(pokeData.stats)
   return (
-    <section className="pokemonSection">
-      <div className="details">
-        <Link href={'/'} className="link">
-          <FontAwesomeIcon icon={faAngleLeft} className="fa-solid fa-angle-left backBtn" />
-          <span >Back</span>
-        </Link>
-        {/* {pokeData} */}
-        <h1>{pokeData.name}</h1>
-        <div className='typeContainer'>
-          {pokeData.types.map(({type:{name}}:any, i:number) => (<TypeLabel pType={name} key={i} />))}
-        </div>
-        <span>#{`0000${pokemonId}`.substr(-4,7)}</span>
-        <Image className='pokeballBackground' 
-          src={pokeballPng}
-          alt=''
-          width={120}
-          height={120}
-        />
-        <Image className='detailSprite' src={pokeData.sprites.front_shiny}
-          loading='lazy'
-          alt={pokeData.name}
-          width={270}
-          height={270}
-        />
-      </div>
-        <div className="pokemonStats">
-          <div>
-            Height
+    <main className="pokemonMain">
+      <section className="pokemonSection">
+        <div className="details">
+          <Link href={'/'} className="link">
+            <FontAwesomeIcon icon={faAngleLeft} className="fa-solid fa-angle-left backBtn" />
+            <span >Back</span>
+          </Link>
+          {/* {pokeData} */}
+          <h1>{pokeData.name}</h1>
+          <div className='typeContainer'>
+            {pokeData.types.map(({type:{name}}:any, i:number) => (<TypeLabel pType={name} key={i} />))}
           </div>
+          <span>#{`0000${pokemonId}`.substr(-4,7)}</span>
+          <Image className='pokeballBackground' 
+            src={pokeballPng}
+            alt=''
+            width={120}
+            height={120}
+          />
+          <Image className='detailSprite' src={pokeData.sprites.front_shiny}
+            loading='lazy'
+            alt={pokeData.name}
+            width={270}
+            height={270}
+          />
         </div>
-    </section>
+          <div className="pokemonStats">
+            <div>
+              <label>
+                Height
+              </label>
+              <label>
+                Weight
+              </label>
+            </div>
+            <div>
+              <label>
+                {pokeData.height}
+              </label>
+              <label>
+              {pokeData.weight}lbs
+              </label>
+            </div>
+            
+            <div>
+              <label>
+                HP
+              </label>
+              <label>
+                Attack
+              </label>
+              <label>
+                Special Attack
+              </label>
+              <label>
+                Special Defense
+              </label>
+              <label>
+                Speed
+              </label>
+            </div>
+            <div>
+              <label>
+              {pokeData.stats[0].base_stat}
+              </label>
+              <label>
+              {pokeData.stats[1].base_stat}
+              </label>
+              <label>
+              {pokeData.stats[2].base_stat}
+              </label>
+              <label>
+              {pokeData.stats[3].base_stat}
+              </label>
+              <label>
+              {pokeData.stats[4].base_stat}
+              </label>
+            </div>
+          </div>
+      </section>
+    </main>
   )
 }

@@ -20,11 +20,9 @@ export default function RootLayout({
         <link rel="stylesheet" href="/" />
       </head>
       <body >
-        <header />
-        <main>
-          {children}
-        </main>
-        <footer />
+        <header></header>
+        {children}
+        <footer></footer>
       </body>
     </html>
   );

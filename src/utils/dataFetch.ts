@@ -1,6 +1,6 @@
-import { Pokemon } from "../app/page"
+import { PokemonI } from "../app/page"
 
-export const pokemonTypeColor:Record<string, {}> = {
+const pokemonTypeColor:Record<string, {}> = {
     bug:{backgroundColor:"#729F3F", color:"#FFFFFF"},
     fairy:{backgroundColor:"#FDB9E9"},
     dragon: {background:"linear-gradient(to top, #F16E57 50%, #53A4CF 50%)", color:"#FFFFFF"},
@@ -22,8 +22,7 @@ export const pokemonTypeColor:Record<string, {}> = {
 }
 
 
-
-export const getAllPokemon = async (page:number): Promise<{pokemonList:Pokemon[], end: number, start: number}> => {
+export const getAllPokemon = async (page:number): Promise<{pokemonList:PokemonI[], end: number, start: number}> => {
     try { 
         const end = (50*page)+1;
         const start = end-50;
@@ -33,14 +32,16 @@ export const getAllPokemon = async (page:number): Promise<{pokemonList:Pokemon[]
         }
 
         promises = (await Promise.all(promises)).map(snap => snap.json())
-        const pokemonList: Pokemon[] = (await Promise.all(promises)).map(({id, name, sprites:{front_default}, types}:any)=>({id, name, sprite:front_default, types}))
+        const pokemonList: PokemonI[] = (await Promise.all(promises)).map(({id, name, sprites:{front_default}, types}:any)=>({id, name, sprite:front_default, types}))
 
         return {pokemonList, end, start:page}
     } catch (e) {
         console.log(e)
         return {pokemonList:[], end:0, start:0}
     }
-} 
+}
+
+
 
 
 export const getPokemonData = async (pokemonId:string) => {

@@ -1,11 +1,11 @@
 import React from 'react'
-import { Pokemon } from '../app/page'
+import { PokemonI } from '../app/page'
 import { TypeLabel } from './TypeLabel'
 import pokeballPng from '../../assets/pokeballBackground.png'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export const Card = (pokemon:Pokemon) => {
+export const Card = (pokemon:PokemonI) => {
   // console.log(pokemon)
 
   return (
