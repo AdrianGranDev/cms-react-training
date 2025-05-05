@@ -6,7 +6,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export const Card = (pokemon:PokemonI) => {
-  // console.log(pokemon)
 
   return (
     <Link className='card link' key={pokemon.id} href={`/pokemon/${pokemon.id}`} >

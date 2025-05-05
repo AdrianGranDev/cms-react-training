@@ -43,56 +43,62 @@ export default async function page({params: {pokemonId},}:{
           />
         </div>
           <div className="pokemonStats">
+
             <div>
-              <label>
-                Height
-              </label>
-              <label>
-                Weight
-              </label>
+              <div>
+                <label>
+                  Height
+                </label>
+                <label>
+                  Weight
+                </label>
+              </div>
+              <div>
+                <label>
+                  {pokeData.height}
+                </label>
+                <label>
+                {pokeData.weight}lbs
+                </label>
+              </div>
             </div>
+
             <div>
-              <label>
-                {pokeData.height}
-              </label>
-              <label>
-              {pokeData.weight}lbs
-              </label>
-            </div>
-            
-            <div>
-              <label>
-                HP
-              </label>
-              <label>
-                Attack
-              </label>
-              <label>
-                Special Attack
-              </label>
-              <label>
-                Special Defense
-              </label>
-              <label>
-                Speed
-              </label>
-            </div>
-            <div>
-              <label>
-              {pokeData.stats[0].base_stat}
-              </label>
-              <label>
-              {pokeData.stats[1].base_stat}
-              </label>
-              <label>
-              {pokeData.stats[2].base_stat}
-              </label>
-              <label>
-              {pokeData.stats[3].base_stat}
-              </label>
-              <label>
-              {pokeData.stats[4].base_stat}
-              </label>
+
+              <div>
+                <label>
+                  HP
+                </label>
+                <label>
+                  Attack
+                </label>
+                <label>
+                  Special Attack
+                </label>
+                <label>
+                  Special Defense
+                </label>
+                <label>
+                  Speed
+                </label>
+              </div>
+              <div>
+                <label>
+                {pokeData.stats[0].base_stat}
+                </label>
+                <label>
+                {pokeData.stats[1].base_stat}
+                </label>
+                <label>
+                {pokeData.stats[2].base_stat}
+                </label>
+                <label>
+                {pokeData.stats[3].base_stat}
+                </label>
+                <label>
+                {pokeData.stats[4].base_stat}
+                </label>
+              </div>
             </div>
           </div>
       </section>

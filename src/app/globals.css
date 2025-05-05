@@ -58,19 +58,18 @@ h1, p {
     display: flex;
     flex-direction: column;
     margin-top: 72px;
-    max-width: 960px;
+    max-width: 887px;
     padding-inline: 100px;
     margin-inline: auto;
 }
 
-section > h1 {
+.pokedex > h1 {
     margin-bottom: 46px;
     font-size: 72px;
 }
 
 
 .filters {
-    margin-bottom: 30px;
     display: flex;
     justify-content: space-between;
     gap: 30px;
@@ -79,7 +78,8 @@ section > h1 {
 .filters > * {
     display: flex;
     flex-direction: column;
-    width: 345px;
+    width: 100%;
+    max-width: 345px;
     gap:8px;
 }
 
@@ -119,11 +119,20 @@ section > h1 {
     flex-direction: column;
     background-color: #F2F2F2;
     border-radius: 10px;
-    padding-top: 7px;
-    padding-left: 12px;
     align-items: flex-start;
-    padding-bottom: 12px;
     overflow: hidden;
+}
+
+.card > *{
+    margin-left: 12px;
+}
+
+.card > span {
+    font-size: 13px;
+    font-weight: 700;
+    color: #808285;
+    margin-top: auto;
+    margin-bottom: 12px;
 }
 
 
@@ -132,8 +141,8 @@ section > h1 {
 }
 
 .card > h1 {
+    margin-top: 7px;
     font-size: 18px;
-    margin-bottom: 6px;
 }
 
 
@@ -154,19 +163,8 @@ section > h1 {
     text-transform: uppercase;
 }
 
-.typeContainer > .typeLabel {
-    border-radius: 12px;
-    padding-inline: 8px;
-    padding-block: 4px;
-    font-size: 11px;
-}
 
-.card > span {
-    font-size: 13px;
-    font-weight: 700;
-    color: #808285;
-    margin-top: auto;
-}
+
 
 .card > .stripeContainer {
     position: absolute;
@@ -224,10 +222,17 @@ section > h1 {
 
 .details {
     position: relative;
-    height: 50%;
+    height: calc(50% - 20px);
     margin-inline: auto;
     max-width: 960px;
     padding-inline: 15px;
+}
+.details > a:first-child {
+    margin-bottom: 20px;
+}
+
+.details:first-of-type {
+    margin-block: 20px;
 }
 
 .details > .detailSprite {
@@ -239,6 +244,7 @@ section > h1 {
 }
 
 .details > .pokeballBackground {
+    margin-bottom: 0px;
     position: absolute;
     bottom: 0px;
     right: 15px;
@@ -280,6 +286,13 @@ section > h1 {
     font-size: 18px;
 }
 
+.typeContainer > .typeLabel {
+    border-radius: 12px;
+    padding-inline: 8px;
+    padding-block: 4px;
+    font-size: 11px;
+}
+
 
 .details > span {
     font-size: 24px;
@@ -303,34 +316,136 @@ section > h1 {
 
 .pokemonStats > div {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     font-size: 18px;
     gap: 10px;
 }
 
-.pokemonStats > div:nth-child(2n) {
+.pokemonStats > div > div:nth-child(2n) {
     font-weight: 700;
 }
 
-.pokemonStats > div:nth-child(1) {
-    margin-right: 70;
-}
-.pokemonStats > div:nth-child(2) {
-    margin-right: 75;
-}
-.pokemonStats > div:nth-child(3) {
-    margin-right: 60;
+.pokemonStats > div > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 
 
+.pokemonStats > div:nth-child(1) > div:nth-child(1) {
+    margin-right: 70px;
+}
+.pokemonStats > div:nth-child(1) > div:nth-child(2) {
+    text-wrap: nowrap;
+    margin-right: 75px;
+}
+.pokemonStats > div:nth-child(2) > div:nth-child(1) {
+    margin-right: 60px;
+}
 
+.pokemonStats > div:nth-child(2) > div:nth-child(2) {
+    padding-right: 27px;
+}
 
+.pokemonStats label {
+    white-space: nowrap;
+  }
 
 .error {
     display: flex;
     width: 100%;
     justify-content: center;
+}
+
+
+
+
+
+@media (max-width: 768px){
+
+
+    footer {
+        height: 60px;
+    }
+
+    .pokemonMain {
+        height: calc(100vh - 80px) !important;
+    }
+
+    .pokedex {
+        margin-top: 48px;
+        padding-inline: 15px;
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+
+    .filters > * {
+        max-width: none;
+    }
+
+    .card > h1 {
+        margin-top: 7px;
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+
+    .pokemonStats {
+        width: calc(100% - 180px);
+        flex-direction: column;
+        gap: 60px;
+        padding: 30px 74px 32px 50px;
+        transform: translate(-50%, -30%);
+    }
+    .pokemonStats > div > div {
+        margin-right: 0px !important;
+    }
+    .pokemonStats > div {
+        gap: unset;
+        justify-content: space-between;
+    }
+
+    .details > .pokeballBackground {
+        right: 50%;
+        transform: translate(50%,0);
+        z-index: 0;
+    }
+    
+    .details > .detailSprite {
+        position: absolute;
+        bottom: 30px;
+        right: 50%;
+        transform: translate(50%,0);
+    }
+
+
+    .pokemonStats {
+        left: 50%;
+        top: 50%; 
+        padding: 36px 74px 52px;
+        transform: translate(-50%, -15%);
+    }
+
+    .details > h1 {
+        font-size: 36px;
+    }
+
+    .details > span {
+        font-size: 16px;
+    }
+
+    .details .typeContainer > .typeLabel {
+        border-radius: 12px;
+        font-size: 11px;
+
+        
+        margin-block: 12px;
+        padding-inline: 8px;
+        padding-block: 4px;
+    }
 }
 
 
