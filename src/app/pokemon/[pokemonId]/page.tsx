@@ -4,7 +4,7 @@ import pokeballPng from '../../../../assets/pokeballBackground.png'
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { TypeLabel } from "@/components/TypeLabel";
+import { TypeLabel } from "@/components/typeLabel/TypeLabel";
 
 
 export default async function page({params: {pokemonId},}:{
@@ -14,7 +14,6 @@ export default async function page({params: {pokemonId},}:{
 }) {
 
   const pokeData = await getPokemonData(pokemonId);
-  console.log(pokeData.stats)
   return (
     <main className="pokemonMain">
       <section className="pokemonSection">

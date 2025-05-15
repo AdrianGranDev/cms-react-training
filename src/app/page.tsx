@@ -1,18 +1,15 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { Card } from "../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { useFetchPokemon } from "@/hooks/useFetchPokemon";
+import { PokemonI, PokemonIndexI } from "@/types/Pokemon";
+import { Loading } from "@/components/loading/Loading";
+import { Card } from "@/components/card/Card";
 
 
-export interface PokemonI {
-  id: number;
-  name: string;
-  types: Array<any>;
-  sprite: string;
-}
+
 const types = [
   "bug",
   "fairy",
@@ -42,38 +39,40 @@ const pokemonTypeCheck = (pokemon:PokemonI, checkType:string) => {
 
 export default function Home() {
 
-  const [pokemons, setPokemons] = useState<PokemonI[]>([])
-  const [{end, start}, setIndex] = useState<{end:number, start: number}>({end:0, start:1})
-  const {loading, success, error, api:{getAllPokemon}} = useFetchPokemon();
+  const [pokemons, setPokemons] = useState<PokemonIndexI[]>([])
+  const [{page, count}, setIndex] = useState<{page:number, count: number}>({page:0, count:1})
+  const {loading, success, error, api:{getAllPokemon, getAllPokemonWFilter}} = useFetchPokemon();
   const [ typeFilter, setTypeFilter ] = useState<string>('all')
   const [ sortFilter, setSortFilter ] = useState<string>('asc')
 
   const getData = async () => {
-    const {pokemonList, ...index} = await getAllPokemon(start);
-    // if ()
-    // setPokemons(typeFilter=='all'? pokemonList: pokemonList.filter((s)=>(pokemonTypeCheck(s, typeFilter))))
-    setPokemons(sortFilter=='asc'? pokemonList: pokemonList.reverse())
-    setIndex(index)
+    try {
+      const {pokemonList, count:SCount } = typeFilter=='all'? await getAllPokemon(page, sortFilter=='asc'):await getAllPokemonWFilter(page, typeFilter, sortFilter=='asc');
+      setPokemons(pokemonList);
+      setIndex({page, count: SCount})
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const handleSearchPage = (newPage:number) => {
-    setIndex(s=>({...s, start: start+ newPage}))
+    setIndex(s=>({...s, page: page+ newPage}))
   }
 
   const handleFilterType = (e:React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
+    setIndex({page:0, count})
     setTypeFilter(e.target.value)
   }
 
   const handleFilterSort = (e:React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
     setSortFilter(e.target.value)
-    setPokemons(s=>s.reverse())
   }
 
   useEffect(()=> {
     getData()
-  },[start])
+  },[page, typeFilter, sortFilter])
   
   return (
     <main>
@@ -99,12 +98,10 @@ export default function Home() {
         </div>
         <div className="pokelist">
           {
-            loading&&<div>loading</div>
+            loading&&<Loading />
           }
           {
-            success&&
-            typeFilter=='all'? pokemons.map((pokemon, i) => <Card {...pokemon} key={i} />):
-            pokemons.filter((s)=>(pokemonTypeCheck(s, typeFilter))).map((pokemon, i) => <Card {...pokemon} key={i} />)
+            success&&pokemons.map((pokemon, i) => <Card {...pokemon} key={i} />)
           }
           {
             error&&<div className="error">Error loading data</div>
@@ -113,9 +110,9 @@ export default function Home() {
         </div>
       </section>
       <div className="paginator">
-        <button disabled={start==1} onClick={()=>handleSearchPage(-1)} className="arrowBtn"><FontAwesomeIcon icon={faAngleLeft} className="fa-solid fa-angle-left" /></button>
-        <span>{start} - {end} of 1008</span>
-        <button disabled={end>1000} onClick={()=>handleSearchPage(1)} className="arrowBtn"><FontAwesomeIcon icon={faAngleRight} className="fa-solid fa-angle-right" /></button>
+        <button disabled={page==0} onClick={()=>handleSearchPage(-1)} className="arrowBtn"><FontAwesomeIcon icon={faAngleLeft} className="fa-solid fa-angle-left" /></button>
+        <span>{(page*50)+1} - {count<((page+1)*50)+1?count:((page+1)*50)+1} of {count}</span>
+        <button disabled={((page+1)*50)+1>count} onClick={()=>handleSearchPage(1)} className="arrowBtn"><FontAwesomeIcon icon={faAngleRight} className="fa-solid fa-angle-right" /></button>
       </div>
     </main>
   );
