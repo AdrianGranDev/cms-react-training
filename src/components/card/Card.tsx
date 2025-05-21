@@ -41,7 +41,7 @@ export const Card = (pokemon:{name:string, url:string}) => {
               width={120}
               height={120}
             />
-            <Image className='stripeContainer' src={sprite}
+            <Image data-testid={'sprite'} className='spriteContainer' src={sprite}
               loading='lazy'
               alt={name}
               width={100}
