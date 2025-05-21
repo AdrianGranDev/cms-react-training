@@ -8,5 +8,5 @@ export type PokemonI = {
     id: number;
     name: string;
     types: Array<any>;
-    sprites: {front_default:string};
+    sprites: {front_default:string, front_shiny:string};
   }

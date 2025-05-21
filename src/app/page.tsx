@@ -116,7 +116,7 @@ export default function Home() {
 
           <div>
             <label htmlFor="sort">Sort By</label>
-            <select name="sort" id="" value={sortFilter} onChange={handleFilterSort}
+            <select name="sort" id="select" value={sortFilter} onChange={handleFilterSort}
               onClick={()=>setSortFilterFocus(s=>!s)}
               onBlur={()=>setSortFilterFocus(false)}
             >

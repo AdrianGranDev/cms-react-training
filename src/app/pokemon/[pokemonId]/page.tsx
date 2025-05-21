@@ -1,5 +1,6 @@
 import Image from "next/image";
 import pokeballPng from '../../../../assets/pokeballBackground.png'
+import shadowPokemon from '../../../../assets/shadow.png'
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +14,7 @@ export default async function page({params: {pokemonId},}:{
   }
 }) {
 
-  const pokeData = await getPokemonDataByID(pokemonId);
+  const {name, stats, sprites, types, height, weight} = await getPokemonDataByID(pokemonId);
   return (
     <main className="pokemonMain">
       <section className="pokemonSection">
@@ -22,10 +23,10 @@ export default async function page({params: {pokemonId},}:{
             <FontAwesomeIcon icon={faAngleLeft} className="fa-solid fa-angle-left backBtn" />
             <span >Back</span>
           </Link>
-          {/* {pokeData} */}
-          <h1>{pokeData.name}</h1>
+          {/* { */}
+          <h1>{name}</h1>
           <div className='typeContainer'>
-            {pokeData.types.map(({type:{name}}:any, i:number) => (<TypeLabel pType={name} key={i} />))}
+            {types.map(({type:{name}}:any, i:number) => (<TypeLabel pType={name} key={i} />))}
           </div>
           <span>#{`0000${pokemonId}`.substr(-4,7)}</span>
           <Image className='pokeballBackground' 
@@ -34,9 +35,9 @@ export default async function page({params: {pokemonId},}:{
             width={120}
             height={120}
           />
-          <Image className='detailSprite' src={pokeData.sprites.front_shiny}
+          <Image className='detailSprite' src={sprites.front_shiny||sprites.front_default||shadowPokemon}
             loading='lazy'
-            alt={pokeData.name}
+            alt={name}
             width={270}
             height={270}
           />
@@ -54,10 +55,10 @@ export default async function page({params: {pokemonId},}:{
               </div>
               <div>
                 <label>
-                  {pokeData.height}
+                  {height}
                 </label>
                 <label>
-                {pokeData.weight}lbs
+                {weight}lbs
                 </label>
               </div>
             </div>
@@ -83,19 +84,19 @@ export default async function page({params: {pokemonId},}:{
               </div>
               <div>
                 <label>
-                {pokeData.stats[0].base_stat}
+                {stats[0].base_stat}
                 </label>
                 <label>
-                {pokeData.stats[1].base_stat}
+                {stats[1].base_stat}
                 </label>
                 <label>
-                {pokeData.stats[2].base_stat}
+                {stats[2].base_stat}
                 </label>
                 <label>
-                {pokeData.stats[3].base_stat}
+                {stats[3].base_stat}
                 </label>
                 <label>
-                {pokeData.stats[4].base_stat}
+                {stats[4].base_stat}
                 </label>
               </div>
             </div>

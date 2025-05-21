@@ -1,12 +1,13 @@
 
 import React from 'react'
 import pokeballPng from '../../../assets/pokeballBackground.png'
+import shadowPokemon from '../../../assets/shadow.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PokemonI } from '@/types/Pokemon'
 import { TypeLabel } from '../typeLabel/TypeLabel'
 
-export const Card = ({id, name, types, sprites:{front_default}}:PokemonI) => {
+export const Card = ({id, name, types, sprites:{front_default, front_shiny}}:PokemonI) => {
   return (
     <Link className='card link' key={id} href={`/pokemon/${id}`} >
       <h1>{name}</h1>
@@ -19,7 +20,7 @@ export const Card = ({id, name, types, sprites:{front_default}}:PokemonI) => {
         width={120}
         height={120}
       />
-      <Image className='stripeContainer' src={front_default}
+      <Image className='stripeContainer' src={front_default||front_shiny||shadowPokemon}
         loading='lazy'
         alt={name}
         width={100}
