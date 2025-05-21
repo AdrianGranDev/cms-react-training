@@ -2,6 +2,7 @@
     font-family: 'Inter'
 } */
 
+     
 
 
 .pokelist > .loading {
@@ -83,6 +84,7 @@ h1, p {
 }
 
 .filters > * {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -91,11 +93,32 @@ h1, p {
 }
 
 .filters > * > select {
-    padding-right: 10px;
+    padding-left: 46px;
     background-color: #313131;
     height: 40px;
     border-radius: 4px;
+    border-color: #313131;
     color: #FFFFFF;
+    outline:#313131;
+}
+
+
+.filters > * > #select {
+    padding-left: 46px;
+    background-color: #313131;
+    height: 40px;
+    border-radius: 4px;
+    border-color: #313131;
+    color: #FFFFFF;
+    outline:#313131;
+    display: flex;
+    align-items: center;
+    text-overflow: ellipsis;
+    padding-right: 50px;
+}
+
+.filters > div {
+    position: relative;
 }
 
 .filters > * > label {
@@ -103,6 +126,79 @@ h1, p {
     font-size: 18px;
     font-weight: 500;
 }
+
+.filters > * > svg {
+    pointer-events: none;
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
+
+
+.filters > * > span {
+    pointer-events: none;
+    height: 40px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding-inline: 9px;
+    background-color: #313131;
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    align-items: center;
+    color: #FFF;
+}
+
+.filters > * > .selected {
+    background-color: black;
+}
+
+
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    background-color: #FFF;
+    z-index: 5;
+    position: absolute;
+    height: 222px;
+    width: calc(100% - 40px);
+    padding: 10px 20px;
+    top: 100%;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0px 16px 36px #00000052;
+    opacity: 1;
+}         
+
+.options > * > span {
+    border-radius: 12px;
+    padding-inline: 8px;
+    padding-block: 4px;
+    font-size: 11px;
+}
+
+.options > * > * {
+    pointer-events: none;
+}
+
+.options > *::first-letter {
+    text-transform: uppercase;
+}
+
+.options > * {
+    display: flex;
+    margin-block: auto;
+    gap: 10px;
+}
+
+
+
+.options > div:first-of-type {
+    color: #BEBEBE;
+    grid-column: 1/4;
+}
+
+
 
 .backgroundImg {
     width: 100%;

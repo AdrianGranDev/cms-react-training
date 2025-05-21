@@ -1,10 +1,10 @@
-import { getPokemonData } from "@/utils/dataFetch";
 import Image from "next/image";
 import pokeballPng from '../../../../assets/pokeballBackground.png'
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { TypeLabel } from "@/components/typeLabel/TypeLabel";
+import { getPokemonDataByID } from "@/utils/dataFetch";
 
 
 export default async function page({params: {pokemonId},}:{
@@ -13,7 +13,7 @@ export default async function page({params: {pokemonId},}:{
   }
 }) {
 
-  const pokeData = await getPokemonData(pokemonId);
+  const pokeData = await getPokemonDataByID(pokemonId);
   return (
     <main className="pokemonMain">
       <section className="pokemonSection">

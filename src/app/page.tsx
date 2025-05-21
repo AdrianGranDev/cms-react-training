@@ -2,52 +2,60 @@
 
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faAngleRight, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { useFetchPokemon } from "@/hooks/useFetchPokemon";
-import { PokemonI, PokemonIndexI } from "@/types/Pokemon";
+import { PokemonI } from "@/types/Pokemon";
 import { Loading } from "@/components/loading/Loading";
 import { Card } from "@/components/card/Card";
+import { Select } from "@/components/select/Select";
+import { TypeLabel } from "@/components/typeLabel/TypeLabel";
 
 
 
-const types = [
-  "bug",
-  "fairy",
-  "dragon",
-  "fire",
-  "ghost",
-  "ground",
-  "normal",
-  "psychic",
-  "steel",
-  "dark",
-  "electric",
-  "fighting",
-  "flying",
-  "grass",
-  "ice",
-  "poison",
-  "rock",
-  "water"
-  ]
-
-const pokemonTypeCheck = (pokemon:PokemonI, checkType:string) => {
-  console.log(pokemon)
-  console.log(pokemon.types.some((s)=> s.type == checkType))
-  return pokemon.types.some((s)=> s.type.name == checkType)
+export const types:Record<string, boolean> = {
+  // "all":false,
+  "bug":false,
+  "normal":false,
+  "flying":false,
+  "dragon":false,
+  "psychic":false,
+  "grass":false,
+  "fairy":false,
+  "steel":false,
+  "ice":false,
+  "fire":false,
+  "dark":false,
+  "poison":false,
+  "ghost":false,
+  "electric":false,
+  "rock":false,
+  "ground":false,
+  "fighting":false,
+  "water":false
 }
+
 
 export default function Home() {
 
-  const [pokemons, setPokemons] = useState<PokemonIndexI[]>([])
+  const [pokemons, setPokemons] = useState<PokemonI[]>([])
   const [{page, count}, setIndex] = useState<{page:number, count: number}>({page:0, count:1})
   const {loading, success, error, api:{getAllPokemon, getAllPokemonWFilter}} = useFetchPokemon();
-  const [ typeFilter, setTypeFilter ] = useState<string>('all')
+  const [ typeFilter, setTypeFilter ] = useState<Record<string, {}>|string>('all')
   const [ sortFilter, setSortFilter ] = useState<string>('asc')
+  const [ sortFilterFocus, setSortFilterFocus ] = useState<boolean>(false)
 
   const getData = async () => {
     try {
-      const {pokemonList, count:SCount } = typeFilter=='all'? await getAllPokemon(page, sortFilter=='asc'):await getAllPokemonWFilter(page, typeFilter, sortFilter=='asc');
+      let data;
+      if ( typeFilter=='all') {
+        data = await getAllPokemon(page, sortFilter)
+      } else {
+        
+        let filter = Object.keys(typeFilter).filter((s:string)=>(typeFilter as Record<string, boolean>)[s])
+        if (filter.length == 0) return setTypeFilter('all')
+        data = await getAllPokemonWFilter(page, filter, sortFilter);
+      }
+      const {pokemonList, count:SCount } = data;
       setPokemons(pokemonList);
       setIndex({page, count: SCount})
     } catch (e) {
@@ -59,45 +67,77 @@ export default function Home() {
     setIndex(s=>({...s, page: page+ newPage}))
   }
 
-  const handleFilterType = (e:React.ChangeEvent<HTMLSelectElement>) => {
-    e.preventDefault()
+  const handleFilterType = (e:string) => {
+    if (e=='all' && typeFilter=='all') return
     setIndex({page:0, count})
-    setTypeFilter(e.target.value)
+    setTypeFilter(s=> 
+      e == 'all' ? 'all':
+      s=='all'?
+        {...types,[e]:true}:
+        {...(s as Record<string, boolean>),[e]:!(s as Record<string, boolean>)[e]}
+    )
   }
 
   const handleFilterSort = (e:React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
     setSortFilter(e.target.value)
+    setIndex({page:0, count})
   }
 
   useEffect(()=> {
     getData()
   },[page, typeFilter, sortFilter])
   
+
+
   return (
     <main>
       <section className="pokedex">
         <h1>Pokédex</h1>
         <div className="filters">
-          <div>
-            <label htmlFor="type">Type</label>
-            <select name="type" id="" value={typeFilter} onChange={handleFilterType} >
-              <option key={'black'} value={'all'}>All</option>
-              {              
-                types.map((s:any)=> (<option key={s} value={s}>{s}</option>))
-              }
-            </select>
-          </div>
+
+          <Select title="Type" value={typeof typeFilter == 'string' ? 'All' : Object.keys(typeFilter).filter((s:string)=>(typeFilter as Record<string, boolean>)[s]).toString()} >
+            <div className="options">
+                <div key={'all'} onClick={()=>{handleFilterType('all')}}>
+                  {/* -value={'all'} */}
+                  <CheckboxSVG selected={typeFilter==='all'} />
+                  All
+                </div>
+                {              
+                  Object.keys(types).map((s:any)=> (
+                  <div key={s} onClick={()=>{handleFilterType(s)}}>
+                    <CheckboxSVG selected={(typeFilter as Record<string, boolean>)[s]} />
+                    <TypeLabel pType={s} />
+                  </div>))
+                }
+            </div>
+          </Select>
+
+
           <div>
             <label htmlFor="sort">Sort By</label>
-            <select name="sort" id="" value={sortFilter} onChange={handleFilterSort} >
-              <option key={'asc'} value={'asc'}>Lowest Number</option>
-              <option key={'desc'} value={'desc'}>Highest Number</option>
+            <select name="sort" id="" value={sortFilter} onChange={handleFilterSort}
+              onClick={()=>setSortFilterFocus(s=>!s)}
+              onBlur={()=>setSortFilterFocus(false)}
+            >
+              <option key={'asc'} value={'asc'}>Lowest Number (First)</option>
+              <option key={'desc'} value={'desc'}>Highest Number (First)</option>
+              <option key={'a-z'} value={'a-z'}>A-Z</option>
+              <option key={'z-a'} value={'z-a'}>Z-A</option>
             </select>
+            <svg width="24" height="24" className="pokeballIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="11" fill="white" stroke="#313131" strokeWidth="2"/>
+              <path d="M1,12 H23" stroke="#313131" strokeWidth="2"/>
+              <circle cx="12" cy="12" r="4" fill="white" stroke="#313131" strokeWidth="2"/>
+            </svg>
+
+            <span className={`${sortFilterFocus&&'selected'}`}>
+              <FontAwesomeIcon icon={sortFilterFocus?faChevronDown:faChevronUp} className="fa-solid" />
+            </span>
           </div>
         </div>
         <div className="pokelist">
-          {
+          {  
             loading&&<Loading />
           }
           {
@@ -123,3 +163,20 @@ export default function Home() {
 
 
 
+const CheckboxSVG = ({selected}:{selected:boolean}) => {
+  if (selected) {
+    return (
+      <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="8" fill="#00BFFF"/>
+        <circle cx="10" cy="10" r="6" fill="#FFFFFF"/>
+        <circle cx="10" cy="10" r="4.5" fill="#00BFFF"/>
+      </svg>
+    )
+  }
+  return (
+    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="10" cy="10" r="8" fill="#BEBEBE"/>
+      <circle cx="10" cy="10" r="6" fill="#FFFFFF"/>
+    </svg>
+  )
+}

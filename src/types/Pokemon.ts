@@ -4,8 +4,9 @@ export type PokemonIndexI = {
   }
   
 export type PokemonI = {
+    order: number;
     id: number;
     name: string;
     types: Array<any>;
-    sprite: string;
+    sprites: {front_default:string};
   }
